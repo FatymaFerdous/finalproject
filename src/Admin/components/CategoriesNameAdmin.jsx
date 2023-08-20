@@ -1,4 +1,4 @@
-CategoriesNameAdmin
+
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import Card from "react-bootstrap/Card";
@@ -6,11 +6,12 @@ import axios from "axios";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCartPlus } from "@fortawesome/free-solid-svg-icons";
+// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+// import { faCartPlus } from "@fortawesome/free-solid-svg-icons";
 // import "../styles/ProductSlider.css";
 // import Helmet from "../components/Helmet/Helmet";
 // import CommonSection from "../components/UI/CommonSection";
+
 
 
 // CustomPrevArrow component

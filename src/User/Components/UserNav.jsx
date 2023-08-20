@@ -25,12 +25,12 @@ export default function UserNav() {
                     </Nav>
 
                     <div className="d-flex gap-3">
-                        <Link to='/profile' className="btn btn-outline-success d-flex align-items-center gap-3">
+                        {/* <Link to='/profile' className="btn btn-outline-success d-flex align-items-center gap-3">
                             <img src="https://cdn-icons-png.flaticon.com/512/3177/3177440.png" style={{ height: '3vh', objectFit: 'contain' }} alt="" />
                             Profile
-                        </Link>
+                        </Link> */}
 
-                        <Link className="btn btn-success" to='/cart'>Cart</Link>
+                        {/* <Link className="btn btn-success" to='/cart'>Cart</Link> */}
                         <button className="btn btn-success"
                             onClick={() => {
                                 Cookies.remove('token')

@@ -39,7 +39,7 @@ export default function Products() {
               />
               <div className="ribbon">${product.price}</div>
               <div className="daraz-card-content">
-                <h5 className="daraz-card-title">{product.ProductName}</h5>
+                <h5 className="daraz-card-title text-dark">{product.ProductName}</h5>
               </div>
             </div>
           </div>

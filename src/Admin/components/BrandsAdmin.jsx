@@ -7,6 +7,28 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
 
+// CustomPrevArrow component
+const CustomPrevArrow = (props) => {
+  const { className, onClick } = props;
+  return (
+
+    <div className={className} onClick={onClick}>
+      <span className="arrow left-arrow" />
+
+    </div>
+  );
+};
+
+// CustomNextArrow component
+const CustomNextArrow = (props) => {
+  const { className, onClick } = props;
+  return (
+    <div className={className} onClick={onClick}>
+      <span className="arrow right-arrow" />
+    </div>
+  );
+};
+
 export default function BrandsAdmin() {
   const [brands, setBrands] = useState([]);
 
@@ -42,6 +64,8 @@ export default function BrandsAdmin() {
         },
       },
     ],
+    prevArrow: <CustomPrevArrow />,
+    nextArrow: <CustomNextArrow />,
   };
 
   return (

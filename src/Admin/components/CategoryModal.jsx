@@ -6,7 +6,7 @@ import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import axios from 'axios';
 // import { AppRoute } from '../../App';
 
-function CategoryModal() {
+function CategoryModal({recallData}) {
     const [show, setShow] = useState(false);
 
     const handleClose = () => setShow(false);
@@ -17,8 +17,9 @@ function CategoryModal() {
 
     const AddCategory = (e) => {
         e.preventDefault();
+        console.log(CategoryImage)
     
-        if (CategoryImage) {
+
             const storageRef = ref(storage, `images/category/${CategoryImage.name}`);
             uploadBytes(storageRef, CategoryImage).then((snapshot) => {
                 getDownloadURL(snapshot.ref)
@@ -29,18 +30,17 @@ function CategoryModal() {
                         };
     
                         axios.post("http://localhost:2800/api/create-category", payload)
-                            .then((response) => {
+                            .then((json) => {
                                 setShow(false);
+
+                                recallData(json.data.categories)
                             })
                             .catch((error) => {
                                 alert("Error creating category: " + error.message);
                             });
                     })
-                    .catch((error) => alert("Error getting download URL: " + error.message));
             });
-        } else {
-            alert("Please select an image before submitting.");
-        }
+        
     };
     
     return (

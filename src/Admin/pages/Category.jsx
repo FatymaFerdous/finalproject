@@ -43,6 +43,7 @@ export default function Category() {
                                     <td>
                                         <button className="btn btn-dark mx-1"><BsFillPencilFill /></button>
                                         <button className="btn btn-dark mx-1" onClick={() => deleteProduct(val.CategoryName)}><AiFillDelete /></button>
+                                        <CategoryUpdate ID= {val._id} recallData={setCategory} />
                                     </td>
                                 </tr>)
                         }

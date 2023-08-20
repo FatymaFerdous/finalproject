@@ -42,7 +42,7 @@ export default function Products() {
                   {product.description}
                 </p>
                 <div className="add-to-cart-btn">
-                  <BiCart /> Add to Cart
+                  <BiCart /> Detail
                 </div>
               </div>
             </div>

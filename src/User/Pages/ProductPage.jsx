@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import Swal from "sweetalert2";
@@ -7,34 +7,38 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMinus, faPlus, faCartPlus } from "@fortawesome/free-solid-svg-icons";
 import ImageSection from "../Components/ImageSection.jsx";
 import { CartContext } from '../CartContext/context'
-// import CommonSection from "../Components/CommonSection";
-// import Helmet from "../components/Helmet/Helmet";
-// import "../styles/ProductPage.css";
+import CommonSection from "../Components/CommonSection.jsx";
+import Helmet from "../Components/Helmet";
+import './pages.css'
 
 function ProductPage() {
-  const { cartDispatch } = useContext(CartContext); // Change this to cartDispatch
-
-  const { cart_dispatch } = useContext(CartContext);
   const { ProductName } = useParams();
+  const { cart_dispatch } = useContext(CartContext);
+
   const [product, setProduct] = useState({});
+  const [productQuantity, setProductQuantity] = useState(1);
   const [review, setReview] = useState("");
   const [ratingStar, setRatingStar] = useState(0);
-  const [productQuantity, setProductQuantity] = useState(1);
 
   const ratingChanged = (newRating) => {
     setRatingStar(newRating);
   };
 
   const addToCart = () => {
+    if (!product) {
+      console.error("Product data is not available.");
+      return;
+    }
+
     const payload = {
       ...product,
-      productQuantity,
+      quantity: productQuantity,
       totalPrice: product.price * productQuantity,
     };
 
     cart_dispatch({
       type: "ADD_TO_CART",
-      payload: payload,
+      payload,
     });
 
     Swal.fire({
@@ -47,7 +51,7 @@ function ProductPage() {
 
   const submitReview = () => {
     const payload = {
-      ProductName: ProductName,
+      ProductName: product.ProductName,
       review: review,
       rating: ratingStar,
     };
@@ -61,9 +65,7 @@ function ProductPage() {
   useEffect(() => {
     // Fetch product details by name
     axios
-      .get(
-        `http://localhost:3000/api/get-product-by-name?ProductName=${ProductName}`
-      )
+      .get(`http://localhost:2800/api/get-product-by-name?ProductName=${ProductName}`)
       .then((response) => setProduct(response.data.products[0]))
       .catch((error) => console.log(error));
   }, [ProductName]);
@@ -82,10 +84,10 @@ function ProductPage() {
           </div>
           <div className="col-md-6">
             <div className="product-details">
-              <h1 className="product-title" style={{ color: " rgb(1, 0, 75)" }}>
+              <h1 className="product-title" style={{ color: "rgb(1, 0, 75)" }}>
                 {product.ProductName}
               </h1>
-              <p className="product-price" style={{ color: " red" }}>
+              <p className="product-price" style={{ color: "red" }}>
                 Price: ${product.price}
               </p>
               <p className="product-description" style={{ color: "#ffc400" }}>
@@ -130,10 +132,7 @@ function ProductPage() {
             <div className="customer-reviews">
               {/* Review and rating inputs */}
               <div className="customer-reviews">
-                <h3
-                  className="review-heading"
-                  style={{ color: " rgb(1, 0, 75)" }}
-                >
+                <h3 className="review-heading" style={{ color: "rgb(1, 0, 75)" }}>
                   Customer Reviews
                 </h3>
 
@@ -143,7 +142,7 @@ function ProductPage() {
                     placeholder="Leave a comment here"
                     id="floatingTextarea2"
                     style={{ height: 100 }}
-                    defaultValue={review}
+                    value={review}
                     onChange={(e) => setReview(e.target.value)}
                   />
                   <label htmlFor="floatingTextarea2">Comments</label>
@@ -151,10 +150,8 @@ function ProductPage() {
 
                 <div className="rating-input">
                   <h4>Rate Us:</h4>
-                  {/* <label htmlFor="rating-input">Rate Us:</label> */}
                   <div className="d-flex align-items-center">
                     <ReactStars
-                      id="rating-input"
                       count={5}
                       size={24}
                       value={ratingStar}
@@ -167,8 +164,8 @@ function ProductPage() {
 
                 <div className="submit-button">
                   <button
-                    className="btn btn-dark "
-                    style={{ background: " rgb(1, 0, 75)" }}
+                    className="btn btn-dark"
+                    style={{ background: "rgb(1, 0, 75)" }}
                     onClick={submitReview}
                   >
                     Submit Review
