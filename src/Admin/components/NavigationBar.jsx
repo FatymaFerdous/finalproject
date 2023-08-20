@@ -20,8 +20,9 @@ export default function NavigationBar() {
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="mx-auto">
                     <Link to='/' className='nav-link'>Home</Link>
-                        <Link to='/category' className='nav-link'>Category</Link>
-                        <Link to='/products' className='nav-link'>Products</Link>
+                        <Link to='/category' className='nav-link'>Category List</Link>
+                        <Link to='/products' className='nav-link'>Products List</Link>
+                        <Link to='/cars' className='nav-link'>Cars</Link>
                     </Nav>
 
                     <div className="d-flex gap-3">
@@ -32,6 +33,8 @@ export default function NavigationBar() {
                                 dispatch({ type: "USER_LOGOUT" })
                             }}
                         >Sign Out</button>
+                         <button className="btn btn-outline-success">
+                            Admin</button>
                     </div>
                 </Navbar.Collapse>
             </Container>

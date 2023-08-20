@@ -7,24 +7,17 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCartPlus } from "@fortawesome/free-solid-svg-icons";
-// import "../styles/ProductSlider.css";
-// import Helmet from "../components/Helmet/Helmet";
-// import CommonSection from "../components/UI/CommonSection";
+import BrandDetails from "../Components/BrandDetails.jsx";
 
-
-// CustomPrevArrow component
 const CustomPrevArrow = (props) => {
   const { className, onClick } = props;
   return (
-   
     <div className={className} onClick={onClick}>
-   <span className="arrow left-arrow" />
-
+      <span className="arrow left-arrow" />
     </div>
   );
 };
 
-// CustomNextArrow component
 const CustomNextArrow = (props) => {
   const { className, onClick } = props;
   return (
@@ -36,13 +29,13 @@ const CustomNextArrow = (props) => {
 
 export default function CategoryPage() {
   const { CategoryName } = useParams();
-  const [products, setCategory] = useState([]);
+  const [products, setProducts] = useState([]);
 
   useEffect(() => {
     axios
-    
-      .get(`http://localhost:2800/api/get-all-categories?CategoryName=/${CategoryName}`)
-      .then((json) => setCategory(json.data.category));
+      .get(`http://localhost:2800/api/get-all-categories?CategoryName=${CategoryName}`)
+      .then((response) => setProducts(response.data.category))
+      .catch((error) => console.error(error));
   }, [CategoryName]);
 
   const sliderSettings = {
@@ -72,58 +65,62 @@ export default function CategoryPage() {
   };
 
   return (
-    // <Helmet title="Categories">
-    // <CommonSection title="Categories" />
-    <div className="container">
-     
-      <div className="my-6 text-center" style={{ color: "#000157" }}>
-        <h1>{CategoryName}</h1>
+    <div className="container my-5">
+      <div className="text-center">
+        <h2 className="productsHead">Categories</h2>
+        <p className="text-secondary">
+          Lorem ipsum dolor sit amet consectetur adipisicing elit.
+        </p>
       </div>
-
-      <Slider {...sliderSettings} className="product-slider">
-        {products.map((val, key) => (
-          <div className="product-card-container" key={key}>
-            <Link
-              className="text-decoration-none text-white"
-              to={`/products/${val.id}`}
-            >
-              <Card
-                className="product-card text-white custom-card"
-                style={{ backgroundColor: "white" }}
+      <div className="container ">
+        <div className="my-6 text-center" style={{ color: "#000157" }}>
+          <h1>{CategoryName}</h1>
+        </div>
+        <Slider {...sliderSettings} className="product-slider">
+          {products.map((product, index) => (
+            <div className="product-card-container" key={index}>
+              <Link
+                className="text-decoration-none text-white"
+                to={`/products/${product.id}`}
               >
-                <div className="ribbon-wrapper">
-                  <div
-                    className="card-ribbon"
-                    style={{ backgroundColor: "#000157" }}
-                  >
-                    ₹ {val.price}
-                  </div>
-                </div>
-                <Card.Img variant="top" src={val.CategoryImage} />
-                <Card.Body
-                  className="d-flex flex-column align-items-center justify-content-between h-100"
-                  style={{ color: "black" }}
+                <Card
+                  className="product-card text-white custom-card"
+                  style={{ backgroundColor: "white" }}
                 >
-                  <div className="text-center">
-                    <Card.Title>{val.CategoryName}</Card.Title>
-                    <Card.Text>{val.description}</Card.Text>
-                  </div>
-                  <div>
-                    <button
-                      className="btn btn-dark"
-                      style={{ backgroundColor: "#000157" ,width:"100%"}}
+                  <div className="ribbon-wrapper">
+                    <div
+                      className="card-ribbon"
+                      style={{ backgroundColor: "#000157" }}
                     >
-                      <FontAwesomeIcon icon={faCartPlus} />
-                      Add to Cart
-                    </button>
+                      ₹ {product.price}
+                    </div>
                   </div>
-                </Card.Body>
-              </Card>
-            </Link>
-          </div>
-        ))}
-      </Slider>
+                  <Card.Img variant="top" src={product.CategoryImage} />
+                  <Card.Body
+                    className="d-flex flex-column align-items-center justify-content-between h-100"
+                    style={{ color: "black" }}
+                  >
+                    <div className="text-center">
+                      <Card.Title>{product.CategoryName}</Card.Title>
+                      <Card.Text>{product.description}</Card.Text>
+                    </div>
+                    <div>
+                      <button
+                        className="btn btn-dark"
+                        style={{ backgroundColor: "#000157", width: "100%" }}
+                      >
+                        <FontAwesomeIcon icon={faCartPlus} />
+                        Add to Cart
+                      </button>
+                    </div>
+                  </Card.Body>
+                </Card>
+              </Link>
+            </div>
+          ))}
+        </Slider>
+        <BrandDetails />
+      </div>
     </div>
-    // </Helmet>
   );
 }

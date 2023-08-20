@@ -8,15 +8,13 @@ export default function Category() {
     const [category, setCategory] = useState([])
 
     useEffect(() => {
-        axios.get('/api/all-categories')
+        axios.get('http://localhost:2800/api/get-all-categories')
             .then((json) => setCategory(json.data.categories))
             .catch((err) => console.log(err))
 
     }, [])
 
     const deleteProduct = (CategoryName) => { console.log(CategoryName) }
-
-
 
     return (
         <div className="container">
@@ -33,8 +31,6 @@ export default function Category() {
                             <th scope="col">Category Name</th>
                             <th scope="col">Category Image</th>
                             <th scope="col">Actions</th>
-
-
                         </tr>
                     </thead>
                     <tbody>
@@ -50,8 +46,6 @@ export default function Category() {
                                     </td>
                                 </tr>)
                         }
-
-
 
                     </tbody>
                 </table>

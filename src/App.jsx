@@ -16,20 +16,22 @@ const ComponentByRoles = {
 const getUserRole = (params) => ComponentByRoles[params] || ComponentByRoles['guest']
 
 export default function App() {
-  const [role, setRole] = useState ('admin')
+  const { state, dispatch } = useContext(GlobalContext)
+ 
+  // const [role, setRole] = useState ('admin')
   // const { state, dispatch } = useContext(Admin)
 
-  // const decodeUser = (token) => {
-  //   if (!token) {
-  //     return undefined
-  //   }
-  //   else {
-  //     const res = decodeToken(token)
-  //     return res?.role
-  //   }
-  // }
+  const decodeUser = (token) => {
+    if (!token) {
+      return undefined
+    }
+    else {
+      const res = decodeToken(token)
+      return res?.role
+    }
+  }
 
-  // const currentToken = decodeUser(state.token)
-  const CurrentUser = getUserRole(role)
+  const currentToken = decodeUser(state.token)
+  const CurrentUser = getUserRole(currentToken)
   return <CurrentUser />
 }

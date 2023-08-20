@@ -1,3 +1,4 @@
+
 export const reducer = (state, action) => {
     switch (action.type) {
 
@@ -13,6 +14,10 @@ export const reducer = (state, action) => {
         case "SET_USER": {
             return { ...state, user: action.payload }
         }
+
+        case "USER_SIGNUP": {
+            return { ...state, token: action.token };
+          }
 
         default: {
             return state;

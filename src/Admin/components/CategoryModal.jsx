@@ -4,7 +4,7 @@ import Modal from 'react-bootstrap/Modal';
 import { storage } from '../utils/FirebaseConfig'
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import axios from 'axios';
-import { AppRoute } from '../../App';
+// import { AppRoute } from '../../App';
 
 function CategoryModal() {
     const [show, setShow] = useState(false);
@@ -17,26 +17,32 @@ function CategoryModal() {
 
     const AddCategory = (e) => {
         e.preventDefault();
-
-
-
-        const storageRef = ref(storage, `images/category/${CategoryImage.name}`);
-        uploadBytes(storageRef, CategoryImage).then((snapshot) => {
-            getDownloadURL(snapshot.ref)
-                .then((url) => {
-                    const payload = { CategoryName, CategoryImage: url }
-                    axios.post(`${AppRoute}api/add-category`, payload)
-                        .then((json) => {
-                            setShow(false);
-                        })
-                        .catch(err => alert(err.message))
-
-                })
-                .catch((error) => alert(error.message));
-        });
-
-    }
-
+    
+        if (CategoryImage) {
+            const storageRef = ref(storage, `images/category/${CategoryImage.name}`);
+            uploadBytes(storageRef, CategoryImage).then((snapshot) => {
+                getDownloadURL(snapshot.ref)
+                    .then((url) => {
+                        const payload = {
+                            CategoryName: CategoryName, // Make sure this matches the server's expected key
+                            CategoryImage: url
+                        };
+    
+                        axios.post("http://localhost:2800/api/create-category", payload)
+                            .then((response) => {
+                                setShow(false);
+                            })
+                            .catch((error) => {
+                                alert("Error creating category: " + error.message);
+                            });
+                    })
+                    .catch((error) => alert("Error getting download URL: " + error.message));
+            });
+        } else {
+            alert("Please select an image before submitting.");
+        }
+    };
+    
     return (
         <>
             <Button variant="dark" onClick={handleShow}>

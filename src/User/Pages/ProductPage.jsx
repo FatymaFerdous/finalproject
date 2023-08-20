@@ -1,56 +1,186 @@
-import axios from 'axios'
-import React, { useContext, useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import React, { useContext, useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import axios from "axios";
+import Swal from "sweetalert2";
+import ReactStars from "react-stars";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faMinus, faPlus, faCartPlus } from "@fortawesome/free-solid-svg-icons";
+import ImageSection from "../Components/ImageSection.jsx";
 import { CartContext } from '../CartContext/context'
-export default function ProductPage() {
+// import CommonSection from "../Components/CommonSection";
+// import Helmet from "../components/Helmet/Helmet";
+// import "../styles/ProductPage.css";
 
-    const { _id } = useParams()
-    const [product, setProduct] = useState({})
-    const [quantity, setQuantity] = useState(1)
+function ProductPage() {
+  const { cartDispatch } = useContext(CartContext); // Change this to cartDispatch
 
-    const { cart_state, cart_dispatch } = useContext(CartContext)
+  const { cart_dispatch } = useContext(CartContext);
+  const { ProductName } = useParams();
+  const [product, setProduct] = useState({});
+  const [review, setReview] = useState("");
+  const [ratingStar, setRatingStar] = useState(0);
+  const [productQuantity, setProductQuantity] = useState(1);
 
-    useEffect(() => {
-        axios.get(`/api/get-product-by-id/${_id}`)
-            .then(json => setProduct(json.data.products))
-            .catch(err => console.log(err))
-    }, [])
+  const ratingChanged = (newRating) => {
+    setRatingStar(newRating);
+  };
 
-    const addtocart = () => {
-        const payload = { ...product, quantity }
-        console.log(payload)
+  const addToCart = () => {
+    const payload = {
+      ...product,
+      productQuantity,
+      totalPrice: product.price * productQuantity,
+    };
 
-        cart_dispatch({
-            type: "ADD_TO_CART",
-            payload
-        })
-    }
+    cart_dispatch({
+      type: "ADD_TO_CART",
+      payload: payload,
+    });
 
-    return (
-        <div className="container">
-            <div className="row">
-                <div className="col-md-6">
-                    <img src={product.thumbnail} alt="" srcSet="" className='img-fluid' />
+    Swal.fire({
+      title: "Added to Cart!",
+      text: "Check your Cart for Check Out",
+      icon: "success",
+      confirmButtonText: "Continue Shopping",
+    });
+  };
 
-                </div>
-                <div className="col-md-6 py-5">
-                    <h2>{product.productName} - {product.price}</h2>
-                    <small className="text-secondary">{product.description}</small>
-                    <div className="row my-5">
-                        {
-                            product?.images?.map((val, key) => <div key={key} className='col-md-4 border border-dark rounded mx-1'><img src={val} className='img-fluid' /></div>)
-                        }
-                    </div>
+  const submitReview = () => {
+    const payload = {
+      ProductName: ProductName,
+      review: review,
+      rating: ratingStar,
+    };
 
-                    <div className='d-flex justify-content-around align-items-center bg-light py-4 rounded border border-secondary'>
-                        <button className="btn btn-dark" disabled={quantity <= 1 ? true : false} onClick={() => setQuantity(quantity - 1)}>-</button>
-                        {quantity}
-                        <button className="btn btn-dark" onClick={() => setQuantity(quantity + 1)}>+</button>
-                    </div>
+    // You can save the review data to local storage here
+    localStorage.setItem("productReview", JSON.stringify(payload));
 
-                    <div className='d-block mt-3'><button className="w-100 btn btn-dark" onClick={addtocart}>Add to Cart</button></div>
-                </div>
+    console.log(payload);
+  };
+
+  useEffect(() => {
+    // Fetch product details by name
+    axios
+      .get(
+        `http://localhost:3000/api/get-product-by-name?ProductName=${ProductName}`
+      )
+      .then((response) => setProduct(response.data.products[0]))
+      .catch((error) => console.log(error));
+  }, [ProductName]);
+
+  return (
+    <Helmet title="Product Detail">
+      <CommonSection title="Product Detail" />
+      <div className="container py-5">
+        <div className="row">
+          <div className="col-md-6">
+            {product?.imageArray?.length > 0 && (
+              <div className="image-section-container">
+                <ImageSection images={product.imageArray} />
+              </div>
+            )}
+          </div>
+          <div className="col-md-6">
+            <div className="product-details">
+              <h1 className="product-title" style={{ color: " rgb(1, 0, 75)" }}>
+                {product.ProductName}
+              </h1>
+              <p className="product-price" style={{ color: " red" }}>
+                Price: ${product.price}
+              </p>
+              <p className="product-description" style={{ color: "#ffc400" }}>
+                {product.description}
+              </p>
+
+              {/* Display product rating */}
+              <div className="product-rating">
+                <ReactStars
+                  count={5}
+                  size={24}
+                  edit={false}
+                  value={product.rating}
+                  color2={"#ffd700"}
+                />
+              </div>
+
+              {/* Quantity selection */}
+              <div className="product-quantity">
+                <button
+                  className="quantity-button"
+                  disabled={productQuantity > 1 ? false : true}
+                  onClick={() => setProductQuantity(productQuantity - 1)}
+                >
+                  <FontAwesomeIcon icon={faMinus} />
+                </button>
+                <span className="quantity-value">{productQuantity}</span>
+                <button
+                  className="quantity-button"
+                  onClick={() => setProductQuantity(productQuantity + 1)}
+                >
+                  <FontAwesomeIcon icon={faPlus} />
+                </button>
+              </div>
+              {/* Add to cart button */}
+              <button className="add-to-cart-button" onClick={addToCart}>
+                <FontAwesomeIcon icon={faCartPlus} className="me-2" />
+                Add to Cart
+              </button>
             </div>
+
+            <div className="customer-reviews">
+              {/* Review and rating inputs */}
+              <div className="customer-reviews">
+                <h3
+                  className="review-heading"
+                  style={{ color: " rgb(1, 0, 75)" }}
+                >
+                  Customer Reviews
+                </h3>
+
+                <div className="form-floating mb-3">
+                  <textarea
+                    className="form-control"
+                    placeholder="Leave a comment here"
+                    id="floatingTextarea2"
+                    style={{ height: 100 }}
+                    defaultValue={review}
+                    onChange={(e) => setReview(e.target.value)}
+                  />
+                  <label htmlFor="floatingTextarea2">Comments</label>
+                </div>
+
+                <div className="rating-input">
+                  <h4>Rate Us:</h4>
+                  {/* <label htmlFor="rating-input">Rate Us:</label> */}
+                  <div className="d-flex align-items-center">
+                    <ReactStars
+                      id="rating-input"
+                      count={5}
+                      size={24}
+                      value={ratingStar}
+                      onChange={ratingChanged}
+                      color2={"#ffd700"}
+                    />
+                    <span className="selected-rating">{ratingStar}</span>
+                  </div>
+                </div>
+
+                <div className="submit-button">
+                  <button
+                    className="btn btn-dark "
+                    style={{ background: " rgb(1, 0, 75)" }}
+                    onClick={submitReview}
+                  >
+                    Submit Review
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-    )
+      </div>
+    </Helmet>
+  );
 }
+
+export default ProductPage;
