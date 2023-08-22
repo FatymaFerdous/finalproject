@@ -21,6 +21,7 @@ export default function NavigationBar() {
                     <Nav className="mx-auto">
                     <Link to='/' className='nav-link'>Home</Link>
                         <Link to='/category' className='nav-link'>Category List</Link>
+                        <Link to='/brands' className='nav-link'>Brand List</Link>
                         <Link to='/products' className='nav-link'>Products List</Link>
                         <Link to='/cars' className='nav-link'>Cars</Link>
                     </Nav>

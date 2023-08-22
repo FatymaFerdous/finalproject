@@ -5,13 +5,11 @@ import axios from "axios";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-// import { faCartPlus } from "@fortawesome/free-solid-svg-icons";
-// import CommonSection from "../Components/CommonSection.jsx";
-// import Helmet from "../Components/Helmet";
 import './pages.css'
+import BrandDetails from "../Components/BrandDetails";
+import AUTO from "../../assets/images/AUTO.png";
 
-// CustomPrevArrow component
+
 const CustomPrevArrow = (props) => {
   const { className, onClick } = props;
   return (
@@ -23,7 +21,7 @@ const CustomPrevArrow = (props) => {
   );
 };
 
-// CustomNextArrow component
+
 const CustomNextArrow = (props) => {
   const { className, onClick } = props;
   return (
@@ -72,12 +70,14 @@ export default function CategoryPage() {
 
   return (
     <>
-     {/* <Helmet title="Categories">
-       <CommonSection title="" /> */}
+    <div  className="d-flex flex-column align-items-center justify-content-between">
+      <img src={AUTO} alt="" />
+    </div>
+
 
       <div className="container">
         <div className="text-center">
-          <h2 className="productsHead">Categories</h2>
+          <h2 className="productsHead muu">Categories</h2>
           <p className="text-secondary">
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum delectus
             magnam doloribus voluptatibus possimus corrupti aliquid itaque harum
@@ -90,37 +90,34 @@ export default function CategoryPage() {
         </div>
       </div>
       <div className="container">
-        <div className="my-5 text-center" style={{ color: "#000157" }}>
+        <div className=" text-center">
           <h1>{CategoryName}</h1>
         </div>
 
         <Slider {...sliderSettings} className="product-slider">
           {products.map((val, key) => (
             <div className="product-card-container" key={key}>
-              {/* <Link
-                className="text-decoration-none text-white"
-                to={`/products/${val.id}`}> */}
+
               <Card
                 className="product-card text-white custom-card"
-                style={{ backgroundColor: "white" }}>
+               >
 
                 <Card.Img variant="top" src={val.CategoryImage} />
                 <Card.Body
-                  className="d-flex flex-column align-items-center justify-content-between h-100"
+                  className="d-flex flex-column align-items-center justify-content-between"
                   style={{ color: "black" }}>
-
                   <div className="text-center">
                     <Card.Title>{val.CategoryName}</Card.Title>
-                    <Card.Text>{val.description}</Card.Text>
                   </div>
                 </Card.Body>
               </Card>
-              {/* </Link> */}
+
             </div>
           ))}
         </Slider>
       </div>
-    {/* // </Helmet> */}
+
+<BrandDetails />
     </>
   );
 }

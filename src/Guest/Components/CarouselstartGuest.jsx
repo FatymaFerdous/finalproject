@@ -1,8 +1,8 @@
 import React from "react";
 import Carousel from "react-bootstrap/Carousel";
 import Vid1 from "../../assets/images/vid1.mp4";
-import imageslide2 from "../../assets/images/2.jpg";
-import imageslide3 from "../../assets/images/3.jpg";
+// import imageslide2 from "../../assets/images/2.jpg";
+// import imageslide3 from "../../assets/images/3.jpg";
 import ReactPlayer from "react-player";
 import './guestcustom.css'
 
@@ -32,12 +32,12 @@ const VideoCarousel = () => {
               />
             </Carousel.Item>
           ))}
-          <Carousel.Item>
+          {/* <Carousel.Item>
             <img className="slide-content" src={imageslide2} alt="Second slide" />
           </Carousel.Item>
           <Carousel.Item>
             <img className="slide-content" src={imageslide3} alt="Third slide" />
-          </Carousel.Item>
+          </Carousel.Item> */}
         </Carousel>
       </div>
       <div className="container">

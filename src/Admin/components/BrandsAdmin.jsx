@@ -36,7 +36,7 @@ export default function BrandsAdmin() {
     axios
       .get("http://localhost:2800/api/get-all-brand")
       .then(response => {
-        setBrands(response.data.category || []);
+        setBrands(response.data.brands || []);
       })
       .catch(error => console.log(error));
   }, []);

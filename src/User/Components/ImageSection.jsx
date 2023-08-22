@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 
+
 export default function ImageSection({ images }) {
   const [thumbnail, setThumbnail] = useState(images[0]);
 

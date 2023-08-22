@@ -5,7 +5,30 @@ import axios from "axios";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import './guestcustom.css';
+
+
+
+// CustomPrevArrow component
+const CustomPrevArrow = (props) => {
+  const { className, onClick } = props;
+  return (
+
+    <div className={className} onClick={onClick}>
+      <span className="arrow left-arrow" />
+
+    </div>
+  );
+};
+
+// CustomNextArrow component
+const CustomNextArrow = (props) => {
+  const { className, onClick } = props;
+  return (
+    <div className={className} onClick={onClick}>
+      <span className="arrow right-arrow" />
+    </div>
+  );
+};
 
 export default function BrandsGuest() {
   const [brands, setBrands] = useState([]);
@@ -14,7 +37,7 @@ export default function BrandsGuest() {
     axios
       .get("http://localhost:2800/api/get-all-brand")
       .then(response => {
-        setBrands(response.data.category || []);
+        setBrands(response.data.brands || []);
       })
       .catch(error => console.log(error));
   }, []);
@@ -42,6 +65,8 @@ export default function BrandsGuest() {
         },
       },
     ],
+    prevArrow: <CustomPrevArrow />,
+    nextArrow: <CustomNextArrow />,
   };
 
   return (

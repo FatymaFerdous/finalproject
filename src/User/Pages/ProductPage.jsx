@@ -5,15 +5,14 @@ import Swal from "sweetalert2";
 import ReactStars from "react-stars";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMinus, faPlus, faCartPlus } from "@fortawesome/free-solid-svg-icons";
-import ImageSection from "../Components/ImageSection.jsx";
-import { CartContext } from '../CartContext/context'
-import CommonSection from "../Components/CommonSection.jsx";
-import Helmet from "../Components/Helmet";
-import './pages.css'
+import ImageSection from "../components/ImageSection";
+import { CartContext } from "../CartContext/context"; // Make sure to import your CartContext
+import "./product.css";
+
 
 function ProductPage() {
   const { ProductName } = useParams();
-  const { cart_dispatch } = useContext(CartContext);
+  const { cart_state, cart_dispatch } = useContext(CartContext); // Use cart_dispatch from your CartContext
 
   const [product, setProduct] = useState({});
   const [productQuantity, setProductQuantity] = useState(1);
@@ -24,14 +23,14 @@ function ProductPage() {
     setRatingStar(newRating);
   };
 
-  const addToCart = () => {
+  const addtoCart = () => {
     if (!product) {
       console.error("Product data is not available.");
       return;
     }
 
     const payload = {
-      ...product,
+      ...product, // Spread the product details
       quantity: productQuantity,
       totalPrice: product.price * productQuantity,
     };
@@ -71,64 +70,67 @@ function ProductPage() {
   }, [ProductName]);
 
   return (
-    <Helmet title="Product Detail">
-      <CommonSection title="Product Detail" />
-      <div className="container py-5">
-        <div className="row">
-          <div className="col-md-6">
-            {product?.imageArray?.length > 0 && (
-              <div className="image-section-container">
-                <ImageSection images={product.imageArray} />
-              </div>
-            )}
-          </div>
-          <div className="col-md-6">
-            <div className="product-details">
-              <h1 className="product-title" style={{ color: "rgb(1, 0, 75)" }}>
-                {product.ProductName}
-              </h1>
-              <p className="product-price" style={{ color: "red" }}>
-                Price: ${product.price}
-              </p>
-              <p className="product-description" style={{ color: "#ffc400" }}>
-                {product.description}
-              </p>
-
-              {/* Display product rating */}
-              <div className="product-rating">
-                <ReactStars
-                  count={5}
-                  size={24}
-                  edit={false}
-                  value={product.rating}
-                  color2={"#ffd700"}
-                />
-              </div>
-
-              {/* Quantity selection */}
-              <div className="product-quantity">
-                <button
-                  className="quantity-button"
-                  disabled={productQuantity > 1 ? false : true}
-                  onClick={() => setProductQuantity(productQuantity - 1)}
-                >
-                  <FontAwesomeIcon icon={faMinus} />
-                </button>
-                <span className="quantity-value">{productQuantity}</span>
-                <button
-                  className="quantity-button"
-                  onClick={() => setProductQuantity(productQuantity + 1)}
-                >
-                  <FontAwesomeIcon icon={faPlus} />
-                </button>
-              </div>
-              {/* Add to cart button */}
-              <button className="add-to-cart-button" onClick={addToCart}>
-                <FontAwesomeIcon icon={faCartPlus} className="me-2" />
-                Add to Cart
-              </button>
+    <>
+  
+        <div className="container py-5">
+          <div className="row">
+            <div className="col-md-6">
+              
+              {product?.imageArray?.length > 0 && (
+                <div className="image-section-container">
+                  <ImageSection images={product.imageArray} />
+                </div>
+              )}
             </div>
-
+            <div className="col-md-6">
+            {product && (
+  <div className="product-details">
+    <h1 className="product-title" style={{ color: "rgb(1, 0, 75)" }}>
+      {product.ProductName}
+    </h1>
+    <h3 className="product-price" style={{ color: "red" }}>
+      Price: ${product.price}
+    </h3>
+    <p className="product-description" style={{ color: "rgb(1, 0, 75)" }}>
+      {product.description}
+    </p>
+    {/* Display product rating */}
+    <div className="product-rating">
+      <ReactStars
+        count={5}
+        size={24}
+        edit={false}
+        value={product.rating}
+        color2={"#ffd700"}
+      />
+    </div>
+    {/* Quantity selection */}
+    <div className="product-quantity">
+      <button
+        className="quantity-button"
+        disabled={productQuantity > 1 ? false : true}
+        onClick={() => setProductQuantity(productQuantity - 1)}
+      >
+        <FontAwesomeIcon icon={faMinus} />
+      </button>
+      <span className="quantity-value">{productQuantity}</span>
+      <button
+        className="quantity-button"
+        onClick={() => setProductQuantity(productQuantity + 1)}
+      >
+        <FontAwesomeIcon icon={faPlus} />
+      </button>
+    </div>
+    {/* Add to cart button */}
+    <button
+      className="add-to-cart-button"
+      onClick={addtoCart} // Use addtoCart without parameters
+    >
+      <FontAwesomeIcon icon={faCartPlus} className="me-2" />
+      Add to Cart
+    </button>
+  </div>
+)}
             <div className="customer-reviews">
               {/* Review and rating inputs */}
               <div className="customer-reviews">
@@ -174,9 +176,12 @@ function ProductPage() {
               </div>
             </div>
           </div>
+          
         </div>
+        
       </div>
-    </Helmet>
+
+    </>
   );
 }
 

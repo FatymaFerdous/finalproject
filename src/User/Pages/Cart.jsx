@@ -1,71 +1,103 @@
-// import React, { useContext } from 'react'
-// import { CartContext } from '../CartContext/context'
-// import { GlobalContext } from '../../Context/context'
-// import { decodeToken } from 'react-jwt'
-// export default function Cart() {
+// Cart.js
+import React, { useContext } from "react";
+import { CartContext } from "../CartContext/context";
+import { GlobalContext } from "../../Context/context";
+import { decodeToken } from "react-jwt";
+// import Helmet from "../components/Helmet/Helmet";
+// import CommonSection from "../components/UI/CommonSection";
+import { Link } from "react-router-dom";
 
 
-//     const { cart_state, cart_dispatch } = useContext(CartContext)
-//     const { state, dispatch } = useContext(GlobalContext)
-//     const total = cart_state.cart.reduce((accumulator, product) => accumulator + (product.price * product.quantity), 0)
-//     const user = decodeToken(state.token)
-//     console.log(user)
-//     const checkout = () => {
-//         const payload = {
-//             items: cart_state.cart,
-//             totalBill: total,
-//             customerAddress: "hello 123 Street ABC",
-//             customerContact: "0900 78601",
-//             customerName: user.username,
-//             customerEmail: user.email
-//         }
+export default function Cart() {
+  const { cart_state, cart_dispatch } = useContext(CartContext);
+  const { state, dispatch } = useContext(GlobalContext);
+  const user = decodeToken(state.token);
 
-//         console.log(payload)
-//     }
+  const calculateTotal = () => {
+    return cart_state.cart.reduce(
+      (accumulator, product) => accumulator + product.price * product.quantity,
+      0
+    );
+  };
 
-//     return (
-//         <div className="container">
-//             <div className="text-center my-5">
-//                 <h2>Cart</h2>
-//                 <small className="text-secondary">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Mollitia eius totam nostrum voluptatibus culpa accusamus.</small>
-//             </div>
+  const checkout = () => {
+    const total = calculateTotal();
+    const payload = {
+      items: cart_state.cart,
+      totalBill: total,
+      customerAddress: "hello 123 Street ABC",
+      customerContact: "0900 78601",
+      customerName: user.username,
+      customerEmail: user.email,
+    };
 
-//             <div className="p-5 rounded bg-dark">
-//                 {
-//                     cart_state.cart.map((val, key) => <div className="card mb-3 w-100" key={key}>
-//                         <div className="row g-0">
-//                             <div className="col-md-2 d-flex justify-content-center align-items-center">
-//                                 <img src={val.thumbnail} style={{ height: '10vh', objectFit: 'contain' }} className="img-fluid rounded-start" alt={val.productName} />
-//                             </div>
-//                             <div className="col-md-8">
-//                                 <div className="card-body">
-//                                     <h5 className="card-title">{val.productName} - {val.price} {val.priceUnit}</h5>
-//                                     <p className="card-text">{val.description}
-//                                     </p>
-//                                     <p className="card-text">
-//                                         <small className="text-body-secondary">Quantity : {val.quantity}</small>
-//                                     </p>
-//                                 </div>
-//                             </div>
-//                             <div className="col-md-2">
-//                                 <h5 className="card-title text-center pt-5">{val.quantity * val.price}</h5>
-//                             </div>
-//                         </div>
-//                     </div>)
-//                 }
+    console.log("Checkout Payload:", payload);
+  };
 
+  const total = calculateTotal();
 
-//                 <div className="border border-primary border-3 bg-light px-5 py-3 rounded d-flex justify-content-around align-items-center">
-//                     <h6>Total</h6>
-//                     <div>{total}</div>
-//                 </div>
+  const deleteItem = (itemId) => {
+    cart_dispatch({ type: "DELETE_ITEM", payload: itemId });
+  };
 
-//                 <div className="container mt-3">
-//                     <button className="d-block w-100 btn btn-light" onClick={checkout}>CheckOut</button>
-//                 </div>
+  const clearCart = () => {
+    cart_dispatch({ type: "CLEAR_CART" });
+  };
 
+  return (
+    // <Helmet title="Cart">
+    //   <CommonSection title="Your Cart" />
+      <div className="container">
+        <div className="cart-container">
+          {cart_state.cart.map((val, key) => (
+            <div
+              className="cart-item"
+              key={key}
+              onDoubleClick={() => deleteItem(val._id)}
+            >
+              <div className="cart-item-image">
+                <img src={val.thumbnail} alt={val.productName} />
+              </div>
+              <div className="cart-item-details">
+                <h5>
+                  {val.productName} - {val.price} {val.priceUnit}
+                </h5>
+                <p>{val.description}</p>
+                <p className="quantity" style={{ color: "red" }}>
+                  Quantity: {val.quantity}
+                </p>
+              </div>
+              <div className="cart-item-price" style={{ color: "red" }}>
+                <h5>{val.quantity * val.price}</h5>
+              </div>
+            </div>
+          ))}
+          <div className="cart-summary">
+            <div className="total" style={{ color: "blue" }}>
+              <h6>Total</h6>
+              <div>{total}</div>
+            </div>
+            <div className="cart-buttons">
+              <button className="btn btn-clear" onClick={clearCart} >
+                Clear Cart
+              </button>
 
-//             </div>
-//         </div >
-//     )
-// }
+              <button
+                // disabled={cart_state.cart.length === 0}
+                className="btn btn-danger w-100 mb-3"
+              >
+                <Link
+                  to={"/products/checkout"}
+                  className="text-decoration-none text-white"
+                >
+                  Checkout!
+                </Link>
+              </button>
+            
+            </div>
+          </div>
+        </div>
+      </div>
+    // </Helmet>
+  );
+}

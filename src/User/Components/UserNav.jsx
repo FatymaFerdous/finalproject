@@ -13,14 +13,14 @@ export default function UserNav() {
 
 
     return (
-        <Navbar expand="lg" className="navbar fixed-top">
+        <Navbar expand="lg" className="navbar">
             <Container>
                 <Link className='navbar-brand' to='/'>CRASHERS</Link>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="mx-auto">
                     <Link to='/' className='nav-link'>Home</Link>
-                        <Link to='/category' className='nav-link'>Category</Link>
+                        <Link to='/category' className='nav-link'>Category & Brands</Link>
                         <Link to='/products' className='nav-link'>Products</Link>
                     </Nav>
 
@@ -30,7 +30,7 @@ export default function UserNav() {
                             Profile
                         </Link> */}
 
-                        {/* <Link className="btn btn-success" to='/cart'>Cart</Link> */}
+                        <Link className="btn btn-success" to='/cart'>Cart</Link>
                         <button className="btn btn-success"
                             onClick={() => {
                                 Cookies.remove('token')

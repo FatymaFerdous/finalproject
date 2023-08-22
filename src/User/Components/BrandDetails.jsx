@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Card from "react-bootstrap/Card";
@@ -8,6 +7,29 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
 
+
+// CustomPrevArrow component
+const CustomPrevArrow = (props) => {
+  const { className, onClick } = props;
+  return (
+
+    <div className={className} onClick={onClick}>
+      <span className="arrow left-arrow" />
+
+    </div>
+  );
+};
+
+// CustomNextArrow component
+const CustomNextArrow = (props) => {
+  const { className, onClick } = props;
+  return (
+    <div className={className} onClick={onClick}>
+      <span className="arrow right-arrow" />
+    </div>
+  );
+};
+
 export default function BrandDetails() {
   const [brands, setBrands] = useState([]);
 
@@ -15,7 +37,7 @@ export default function BrandDetails() {
     axios
       .get("http://localhost:2800/api/get-all-brand")
       .then(response => {
-        setBrands(response.data.category || []);
+        setBrands(response.data.brands || []);
       })
       .catch(error => console.log(error));
   }, []);
@@ -43,6 +65,8 @@ export default function BrandDetails() {
         },
       },
     ],
+    prevArrow: <CustomPrevArrow />,
+    nextArrow: <CustomNextArrow />,
   };
 
   return (
@@ -59,7 +83,7 @@ export default function BrandDetails() {
         {brands.map((val, key) => (
           <div className="col-lg-3 col-md-4 col-sm-6 my-3" key={key}>
             <div className="darazi-card">
-              <Link className="text-decoration-none" to={`/login`}>
+           
                 <Card>
                   <Card.Img src={val.BrandImage} className="card-img-top" />
                   <div className="daraz-card-content">
@@ -68,7 +92,6 @@ export default function BrandDetails() {
                     </h5>
                   </div>
                 </Card>
-              </Link>
             </div>
           </div>
         ))}
