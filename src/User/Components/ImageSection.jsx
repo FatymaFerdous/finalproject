@@ -1,39 +1,37 @@
-import React, { useState } from "react";
+import React, { useState } from 'react'
+import { useEffect } from 'react';
+
+function ImageSection({ images }) {
+
+    const [img, setImg] = useState(images[0] ? images[0] : null);
+
+    const changeImage = (index) => {
+        setImg(images[index])
+    }
 
 
-export default function ImageSection({ images }) {
-  const [thumbnail, setThumbnail] = useState(images[0]);
+    return (
+        <>
+            <div className="d-flex align-items-center">
 
-  const changeImage = (index) => {
-    setThumbnail(images[index]);
-  };
+                <div className=' bg-light p-1 mb-5 mt-5'>
+                    {
+                        images?.map((val, key) =>
+                            <div style={{ height: '17vh' }} className={img == images[key] ? ('opacity-25 p-1') : (null)} >
+                                <img style={{ height: '16vh', width: '100%' }} onClick={() => changeImage(key)} key={key} className='img-fluid' src={val} alt={`img-${key}`} />
+                            </div>)
+                    }
+                </div>
 
-  return (
-    <>
-      <div className="d-flex align-items-center gap-5 border bg-white p-3 ">
-        {images.map((val, key) => (
-          <div
-            onClick={() => changeImage(key)}
-            key={key}
-            className={thumbnail === val ? "border border-dark" : null}
-          >
-            <img
-              className="img-fluid"
-              src={val}
-              alt={`thumbnail${key}`}
-              style={{ height: "100px" }}
-            />
-          </div>
-        ))}
-      </div>
-      <div className="container w-75">
-        <img
-          src={thumbnail}
-          alt=""
-          className="img-fluid mb-2  img-fluid object-fit-contain"
-          style={{ height: "390px" }}
-        />
-      </div>
-    </>
-  );
+                <div className="container w-85 text-center">
+                    <img className='img-fluid mb-4 mt-4 ' style={{ height: '50vh', width: '100%' }} src={img} alt='' />
+                </div>
+
+
+
+            </div>
+        </>
+    )
 }
+
+export default ImageSection

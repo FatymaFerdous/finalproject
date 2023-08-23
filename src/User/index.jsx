@@ -5,7 +5,7 @@ import Home from "./Pages/myHome";
 import Products from './Pages/Products'
 import OrderPlacement from './Pages/OrderPlacement'
 import ProductPage from './Pages/ProductPage'
-import Cart from './Pages/Cart'
+// import Cart from './Pages/Cart'
 import { Navigate, Route, Routes } from "react-router-dom";
 import FooterEnd from './Components/FooterEnd'
 
@@ -20,14 +20,15 @@ export default function User() {
                 <Route path="/" element={<Home />} />
                 <Route path="/orderPlacement" element={<OrderPlacement />} />
                 <Route path="/products" element={<Products />} />
-                <Route path="/cart" element={<Cart />} />
-                <Route path="/products/:_id" element={<ProductPage />} />
+                {/* <Route path="/cart" element={<Cart />} /> */}
+                <Route path="/products/:productName" element={<ProductPage />} />
+                <Route path="/products/checkout" element={<OrderPlacement />} />
                 <Route path="/category" element={<Category />} />
                 <Route path="*" element={<Navigate to='/' replace={true} />} />
             </Routes>
 
             <FooterEnd />
-
+            
 
         </>
     )

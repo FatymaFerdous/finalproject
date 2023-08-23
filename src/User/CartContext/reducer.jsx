@@ -3,24 +3,13 @@ export const reducer = (state, action) => {
         case "ADD_TO_CART": {
             return { ...state, cart: [...state.cart, action.payload] };
         }
-
-        case "UPDATE_CART_ITEM": {
-            const updatedCart = state.cart.map(item =>
-                item.id === action.payload.id ? action.payload : item
-            );
-            return { ...state, cart: updatedCart };
-        }
-
-        case "DELETE_CART_ITEM": {
-            const updatedCart = state.cart.filter(item =>
-                item.id !== action.payload);
-            return { ...state, cart: updatedCart };
-        }
-
         case "CLEAR_CART": {
             return { ...state, cart: [] };
         }
-
+        case "DELETE_ITEM": {
+            const updatedCart = state.cart.filter((item) => item._id !== action.payload);
+            return { ...state, cart: updatedCart };
+        }
         default: {
             return state;
         }

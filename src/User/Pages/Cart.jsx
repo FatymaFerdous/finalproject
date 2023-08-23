@@ -1,11 +1,9 @@
-// Cart.js
 import React, { useContext } from "react";
 import { CartContext } from "../CartContext/context";
 import { GlobalContext } from "../../Context/context";
 import { decodeToken } from "react-jwt";
-// import Helmet from "../components/Helmet/Helmet";
-// import CommonSection from "../components/UI/CommonSection";
 import { Link } from "react-router-dom";
+import "./cart.css"; // Import the cart.css file
 
 
 export default function Cart() {
@@ -45,8 +43,8 @@ export default function Cart() {
   };
 
   return (
-    // <Helmet title="Cart">
-    //   <CommonSection title="Your Cart" />
+    <>
+     
       <div className="container">
         <div className="cart-container">
           {cart_state.cart.map((val, key) => (
@@ -56,40 +54,41 @@ export default function Cart() {
               onDoubleClick={() => deleteItem(val._id)}
             >
               <div className="cart-item-image">
-                <img src={val.thumbnail} alt={val.productName} />
+                <img src={val.thumbnail} alt="" className="w-50 h-40"/>
               </div>
               <div className="cart-item-details">
                 <h5>
-                  {val.productName} - {val.price} {val.priceUnit}
+                  {val.ProductName} 
+                  <div className="cart-item-price" style={{ color: "green" }}>
+                <h5>${val.quantity * val.price}</h5>
+              </div>
                 </h5>
                 <p>{val.description}</p>
-                <p className="quantity" style={{ color: "red" }}>
+                <p className="quantity" style={{ color: "green" }}>
                   Quantity: {val.quantity}
                 </p>
               </div>
-              <div className="cart-item-price" style={{ color: "red" }}>
-                <h5>{val.quantity * val.price}</h5>
-              </div>
             </div>
           ))}
+           <br />
+            <br />
           <div className="cart-summary">
-            <div className="total" style={{ color: "blue" }}>
+            <div className="total" >
               <h6>Total</h6>
               <div>{total}</div>
             </div>
             <div className="cart-buttons">
-              <button className="btn btn-clear" onClick={clearCart} >
+              <button className="btn btn-clear btn-success" onClick={clearCart} >
                 Clear Cart
               </button>
 
               <button
                 // disabled={cart_state.cart.length === 0}
-                className="btn btn-danger w-100 mb-3"
+                className="btn btn-success w-100 mb-3 my-3"
               >
                 <Link
                   to={"/products/checkout"}
-                  className="text-decoration-none text-white"
-                >
+                  className="text-decoration-none text-white">
                   Checkout!
                 </Link>
               </button>
@@ -98,6 +97,6 @@ export default function Cart() {
           </div>
         </div>
       </div>
-    // </Helmet>
+</>
   );
 }
