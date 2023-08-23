@@ -2,7 +2,7 @@
 # Hi 👋, I'm Fatyma Ferdous
 ## A passionate Mern Stack Developer
 
-Connect with me: [Email](mailto:laibamohammadali@gmail.com)
+Connect with me: [Email](mailto:fatimafirdous003@gmail.com)
 
 ## About Me
 
