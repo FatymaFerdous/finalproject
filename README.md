@@ -6,7 +6,7 @@ Connect with me: [Email](mailto:fatimafirdous003@gmail.com)
 
 ## About Me
 
-I'm a passionate frontend developer with a keen interest in crafting intuitive and delightful user experiences. With a strong foundation in languages like HTML, CSS, and JavaScript, I strive to create modern and responsive web applications.
+I'm a passionate frontend and backend developer with a keen interest in crafting intuitive and delightful user experiences. With a strong foundation in languages like HTML, CSS, and JavaScript, I strive to create modern and responsive web applications.
 
 - Currently working on: Mern Stack Web Project
 - Learning: MERN Stack
